@@ -1,6 +1,11 @@
 """
-Full-article extraction. Uses newspaper3k (fast, decent) with a BeautifulSoup
-fallback so a missing dependency or JS-rendered page doesn't kill the run.
+Full-article extraction. Uses trafilatura (actively maintained, Python 3.13
+compatible) with a BeautifulSoup fallback so a missing dependency or
+JS-rendered page doesn't kill the run.
+
+Trafilatura replaced the original newspaper3k integration in April 2026
+because newspaper3k is abandoned (last release 2020) and breaks on
+Python 3.13 due to lxml's removal of `html.clean`.
 """
 from __future__ import annotations
 
@@ -18,24 +23,30 @@ def fetch_full_article(url: str) -> Optional[str]:
     """Return cleaned article body text, or None on failure."""
     if not url:
         return None
-    try:
-        from newspaper import Article
-        art = Article(url, language="en")
-        art.download()
-        art.parse()
-        if art.text and len(art.text) > 200:
-            return art.text
-    except Exception as e:
-        logger.debug(f"newspaper3k failed for {url}: {e}")
 
-    # Fallback: fetch + extract paragraphs
+    # Primary: trafilatura. Better extraction than newspaper3k anyway.
+    try:
+        import trafilatura
+        downloaded = trafilatura.fetch_url(url)
+        if downloaded:
+            text = trafilatura.extract(
+                downloaded,
+                include_comments=False,
+                include_tables=False,
+                favor_recall=True,    # prefer slightly noisier output to losing the article
+            )
+            if text and len(text) > 200:
+                return text
+    except Exception as e:
+        logger.debug(f"trafilatura failed for {url}: {e}")
+
+    # Fallback: requests + BeautifulSoup paragraph extraction
     try:
         scraper = _GenericFetcher()
         r = scraper.get(url)
         if not r:
             return None
         soup = BeautifulSoup(r.text, "lxml")
-        # Strip noise
         for tag in soup(["script", "style", "nav", "aside", "footer", "header"]):
             tag.decompose()
         paras = [p.get_text(" ", strip=True) for p in soup.find_all("p")]

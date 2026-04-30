@@ -1,40 +1,52 @@
-# Core
-streamlit==1.36.0
-pandas==2.2.2
-numpy==1.26.4
-python-dotenv==1.0.1
-pyyaml==6.0.1
+# =============================================================================
+# Python 3.11 / 3.12 / 3.13 compatible.
+#
+# Versions are expressed as floors (>=), not exact pins, so the resolver
+# can pick wheels that exist for whichever Python the host platform uses
+# (Railway/Streamlit Cloud default to 3.13 as of 2026).
+#
+# If you need reproducibility, generate a lockfile with:
+#     pip install pip-tools
+#     pip-compile requirements.txt -o requirements.lock
+# =============================================================================
 
-# Database
-SQLAlchemy==2.0.30
-# psycopg2-binary==2.9.9   # uncomment for Postgres
+# ---- Core ----
+streamlit>=1.40
+pandas>=2.2.3
+numpy>=2.1
+python-dotenv>=1.0
+pyyaml>=6.0
 
-# Scraping / HTTP
-requests==2.32.3
-beautifulsoup4==4.12.3
-lxml==5.2.2
-feedparser==6.0.11
-newspaper3k==0.2.8
-fake-useragent==1.5.1
-tenacity==8.4.2
-# playwright==1.44.0       # uncomment if you need JS rendering
+# ---- Database ----
+SQLAlchemy>=2.0
+# psycopg2-binary>=2.9     # uncomment for Postgres
 
-# NLP / Translation (optional)
-langdetect==1.0.9
-# openai==1.35.0            # optional, for LLM summarization
-# deep-translator==1.11.4   # optional, ZH→EN
+# ---- HTTP / scraping ----
+requests>=2.32
+beautifulsoup4>=4.12
+lxml>=5.3
+lxml_html_clean>=0.4       # required by lxml ≥5 + any html-cleaning code
+feedparser>=6.0
+trafilatura>=2.0           # replaces abandoned newspaper3k for article extraction
+tenacity>=9.0
+# playwright>=1.48          # uncomment for JS-rendered sites
 
-# Charts / Maps
-plotly==5.22.0
-pydeck==0.9.1
+# ---- NLP (optional) ----
+langdetect>=1.0
+# openai>=1.40              # uncomment for LLM summarization
+# deep-translator>=1.11     # uncomment for ZH→EN
 
-# Scheduling
-APScheduler==3.10.4
-schedule==1.2.2
+# ---- Charts ----
+plotly>=5.24
+# pydeck is bundled with streamlit; no need to pin separately
 
-# Export
-openpyxl==3.1.5
-reportlab==4.2.2
+# ---- Scheduling ----
+APScheduler>=3.10
+schedule>=1.2
 
-# Logging
-loguru==0.7.2
+# ---- Export ----
+openpyxl>=3.1
+reportlab>=4.2
+
+# ---- Logging ----
+loguru>=0.7
