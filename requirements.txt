@@ -1,0 +1,40 @@
+# Core
+streamlit==1.36.0
+pandas==2.2.2
+numpy==1.26.4
+python-dotenv==1.0.1
+pyyaml==6.0.1
+
+# Database
+SQLAlchemy==2.0.30
+# psycopg2-binary==2.9.9   # uncomment for Postgres
+
+# Scraping / HTTP
+requests==2.32.3
+beautifulsoup4==4.12.3
+lxml==5.2.2
+feedparser==6.0.11
+newspaper3k==0.2.8
+fake-useragent==1.5.1
+tenacity==8.4.2
+# playwright==1.44.0       # uncomment if you need JS rendering
+
+# NLP / Translation (optional)
+langdetect==1.0.9
+# openai==1.35.0            # optional, for LLM summarization
+# deep-translator==1.11.4   # optional, ZH→EN
+
+# Charts / Maps
+plotly==5.22.0
+pydeck==0.9.1
+
+# Scheduling
+APScheduler==3.10.4
+schedule==1.2.2
+
+# Export
+openpyxl==3.1.5
+reportlab==4.2.2
+
+# Logging
+loguru==0.7.2

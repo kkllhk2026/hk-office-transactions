@@ -1,0 +1,107 @@
+# Source registry. Verify each URL/selector before relying in production.
+# RSS feeds are most stable; HTML scrapers WILL break and need re-tuning.
+
+rss_feeds:
+  # ---- Local HK ----
+  - name: "SCMP Business"
+    url: "https://www.scmp.com/rss/92/feed"
+    region: "local"
+    language: "en"
+  - name: "SCMP Property"
+    url: "https://www.scmp.com/rss/318198/feed"
+    region: "local"
+    language: "en"
+  - name: "Mingtiandi"
+    url: "https://www.mingtiandi.com/feed/"
+    region: "local"
+    language: "en"
+  - name: "Hong Kong Business"
+    url: "https://hongkongbusiness.hk/rss/latest"
+    region: "local"
+    language: "en"
+  - name: "The Standard HK"
+    url: "https://www.thestandard.com.hk/sections-news-rss/4"  # Property
+    region: "local"
+    language: "en"
+  - name: "RTHK English News"
+    url: "https://rthk.hk/rthk/news/rss/e_expressnews_elocal.xml"
+    region: "local"
+    language: "en"
+
+  # ---- International ----
+  - name: "Reuters Business"
+    url: "https://www.reutersagency.com/feed/?best-sectors=business-finance&post_type=best"
+    region: "foreign"
+    language: "en"
+  - name: "Real Estate Asia"
+    url: "https://www.realestateasia.com/rss/latest"
+    region: "foreign"
+    language: "en"
+  - name: "Straits Times Business"
+    url: "https://www.straitstimes.com/news/business/rss.xml"
+    region: "foreign"
+    language: "en"
+
+# Sites without good RSS — full-page scraping
+news_sites:
+  - name: "HK01 Property"
+    url: "https://www.hk01.com/channel/property"
+    region: "local"
+    language: "zh"
+    article_selector: "a.card__link"
+  - name: "Mingtiandi HK Tag"
+    url: "https://www.mingtiandi.com/tag/hong-kong/"
+    region: "local"
+    language: "en"
+    article_selector: "h3.entry-title a"
+  - name: "JLL HK Insights"
+    url: "https://www.jll.com.hk/en/trends-and-insights"
+    region: "local"
+    language: "en"
+    article_selector: "a.card__link"
+  - name: "Savills HK Research"
+    url: "https://www.savills.com.hk/research_articles/"
+    region: "local"
+    language: "en"
+    article_selector: "article a"
+  - name: "Colliers HK News"
+    url: "https://www.colliers.com/en-hk/news"
+    region: "local"
+    language: "en"
+    article_selector: "a.card-link"
+
+# Transaction listing pages — need custom parsers per site.
+# Selectors below are placeholders; verify against current HTML.
+transaction_sites:
+  centaline_commercial:
+    base_url: "https://oir.centanet.com"
+    listing_url: "https://oir.centanet.com/en/transaction"
+    row_selector: "div.transaction-row, table tr.tx-row"
+    enabled: true
+    notes: "Centaline OIR — public transaction archive."
+
+  midland_ici:
+    base_url: "https://www.midlandici.com.hk"
+    listing_url: "https://www.midlandici.com.hk/ics/property/transaction/list/en"
+    row_selector: "table tr"
+    enabled: true
+    notes: "Midland IC&I transaction list."
+
+  leasinghub:
+    base_url: "https://www.leasinghub.com"
+    listing_url: "https://www.leasinghub.com/transactions"
+    row_selector: "div.transaction-card"
+    enabled: true
+    notes: "LeasingHub office transactions."
+
+  rvd:
+    base_url: "https://www.rvd.gov.hk"
+    listing_url: "https://www.rvd.gov.hk/en/publications/property_market_statistics.html"
+    enabled: true
+    notes: "RVD publishes monthly Excel/PDF; download + parse separately."
+
+  data_gov_hk:
+    base_url: "https://data.gov.hk"
+    search_url: "https://data.gov.hk/en-data/dataset?q=property+transaction"
+    enabled: true
+    notes: "Land Registry monthly summary CSVs available here."
